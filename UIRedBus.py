@@ -63,7 +63,7 @@ for i,r in df_SK.iterrows():
 
 #Megalaya bus
 lists_MG=[]
-df_Mg=pd.read_csv("MG_routes_detail.csv")
+df_MG=pd.read_csv("MG_routes_detail.csv")
 for i,r in df_MG.iterrows():
     lists_MG.append(r["route"])
 
@@ -76,45 +76,46 @@ web=option_menu(menu_title="🚌OnlineBus",
                 orientation="horizontal"
               )
 
- def type_and_fare_T(bus_type, fare_range, route_name):
-            conn = mysql.connector.connect(host="localhost", user="root", password="", database="RED_Final_BUS_DETAILS")
-            my_cursor = conn.cursor()
-            # Define fare range based on selection
-            if fare_range == "50-1000":
-                fare_min, fare_max = 50, 1000
-            elif fare_range == "1000-2000":
-                fare_min, fare_max = 1000, 2000
-            else:
-                fare_min, fare_max = 2000, 100000  
+def type_and_fare_T(bus_type, fare_range, route_name):
+        conn = mysql.connector.connect(host="localhost", user="root", password="Rn@9867908494", database="RED_Final_BUS_DETAILS")
+        my_cursor = conn.cursor()
+        # Define fare range based on selection
+        if fare_range == "50-1000":
+            fare_min, fare_max = 50, 1000
+        elif fare_range == "1000-2000":
+            fare_min, fare_max = 1000, 2000
+        else:
+            fare_min, fare_max = 2000, 100000  
 
-            # Define bus type condition
-            if bus_type == "sleeper":
-                bus_type_condition = "Bus_type LIKE '%Sleeper%'"
-            elif bus_type == "semi-sleeper":
-                bus_type_condition = "Bus_type LIKE '%A/c Semi Sleeper %'"
-            else:
-                bus_type_condition = "Bus_type NOT LIKE '%Sleeper%' AND Bus_type NOT LIKE '%Semi-Sleeper%'"
+        # Define bus type condition
+        if bus_type == "sleeper":
+            bus_type_condition = "Bus_type LIKE '%Sleeper%'"
+        elif bus_type == "semi-sleeper":
+            bus_type_condition = "Bus_type LIKE '%A/c Semi Sleeper %'"
+        else:
+            bus_type_condition = "Bus_type NOT LIKE '%Sleeper%' AND Bus_type NOT LIKE '%Semi-Sleeper%'"
 
-            query = f'''
-                SELECT * FROM bus_details 
-                WHERE Price BETWEEN {fare_min} AND {fare_max}
-                AND Route_name = "{route_name}"
-                AND {bus_type_condition} AND Start_time>='{TIME}'
-                ORDER BY Price and Start_time DESC
-            '''
-            my_cursor.execute(query)
-            out = my_cursor.fetchall()
-            conn.close()
+        query = f'''
+            SELECT * FROM bus_details 
+            WHERE Price BETWEEN {fare_min} AND {fare_max}
+            AND Route_name = "{route_name}"
+            AND {bus_type_condition} AND Start_time>='{TIME}'
+            ORDER BY Price and Start_time DESC
+        '''
+        my_cursor.execute(query)
+        out = my_cursor.fetchall()
+        conn.close()
 
-            df = pd.DataFrame(out, columns=[
-                "ID", "Bus_name", "Bus_type", "Start_time", "End_time", "Total_duration",
-                "Price", "Seats_Available", "Ratings", "Route_link", "Route_name"
+        print(out)
+        df = pd.DataFrame(out, columns=[
+            "ID", "Bus_name", "Bus_type", "Start_time", "End_time", "Total_duration",
+            "Price", "Seats_Available", "Ratings", "Route_link", "Route_name", "State"
             ])
-            return df
+        return df
      
 # Home page setting
 if web=="Home":
-    slt.image("t_500x300.jpg",width=200)
+    #slt.image("t_500x300.jpg",width=200)
     slt.title("Redbus Data Scraping with Selenium & Dynamic Filtering using Streamlit")
     slt.subheader(":Red[Domain:]  Transportation")
     slt.markdown("The 'Redbus Data Scraping and Filtering with Streamlit Application' aims to revolutionize the transportation industry by providing a comprehensive solution for collecting, analyzing, and visualizing bus travel data. By utilizing Selenium for web scraping, this project automates the extraction of detailed information from Redbus, including bus routes, schedules, prices, and seat availability. By streamlining data collection and providing powerful tools for data-driven decision-making, this project can significantly improve operational efficiency and strategic planning in the transportation industry.")
@@ -143,14 +144,14 @@ if web == "📍States and Routes":
     if S == "Chandigarh":
         CH = slt.selectbox("List of routes",lists_CH)
 
-        df_result = type_and_fare(select_type, select_fare, CH)
+        df_result = type_and_fare_T(select_type, select_fare, CH)
         slt.dataframe(df_result)
 
     # UP bus fare filtering
     if S=="Uttar Pradesh":
         UP=slt.selectbox("list of routes",lists_UP)
 
-        df_result = type_and_fare_A(select_type, select_fare, UP)
+        df_result = type_and_fare_T(select_type, select_fare, UP)
         slt.dataframe(df_result)
           
 
@@ -165,14 +166,14 @@ if web == "📍States and Routes":
     if S=="West Bengal":
         WB=slt.selectbox("list of routes",lists_WB)
         
-        df_result = type_and_fare_G(select_type, select_fare, WB)
+        df_result = type_and_fare_T(select_type, select_fare, WB)
         slt.dataframe(df_result)
 
     # Punjab bus fare filtering
     if S=="Punjab":
         PB=slt.selectbox("list of routes",lists_PB)
 
-        df_result = type_and_fare_R(select_type, select_fare, PB)
+        df_result = type_and_fare_T(select_type, select_fare, PB)
         slt.dataframe(df_result)
           
 
@@ -180,14 +181,14 @@ if web == "📍States and Routes":
     if S=="Rajasthan":
         RJ=slt.selectbox("list of rotes",lists_RJ)
 
-        df_result = type_and_fare_SB(select_type, select_fare, RJ)
+        df_result = type_and_fare_T(select_type, select_fare, RJ)
         slt.dataframe(df_result)
     
     # Himachal Pradesh bus fare filtering
     if S=="Himachal Pradesh":
         HM=slt.selectbox("list of rotes",lists_HM)
 
-        df_result = type_and_fare_H(select_type, select_fare, HM)
+        df_result = type_and_fare_T(select_type, select_fare, HM)
         slt.dataframe(df_result)
 
 
@@ -195,21 +196,21 @@ if web == "📍States and Routes":
     if S=="Assam":
         AS=slt.selectbox("list of rotes",lists_AS)
 
-        df_result = type_and_fare_AS(select_type, select_fare, AS)
+        df_result = type_and_fare_T(select_type, select_fare, AS)
         slt.dataframe(df_result)
 
     # Sikkim bus fare filtering
     if S=="Sikkim":
         SK=slt.selectbox("list of rotes",lists_SK)
 
-        df_result = type_and_fare_UP(select_type, select_fare, SK)
+        df_result = type_and_fare_T(select_type, select_fare, SK)
         slt.dataframe(df_result)
 
     # Megalaya bus fare filtering
     if S=="Megalaya":
         MG=slt.selectbox("list of rotes",lists_MG)
 
-        df_result = type_and_fare_WB(select_type, select_fare, MG)
+        df_result = type_and_fare_T(select_type, select_fare, MG)
         slt.dataframe(df_result)
 
 
