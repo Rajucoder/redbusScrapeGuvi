@@ -106,7 +106,6 @@ def type_and_fare_T(bus_type, fare_range, route_name):
         out = my_cursor.fetchall()
         conn.close()
 
-        print(out)
         df = pd.DataFrame(out, columns=[
             "ID", "Bus_name", "Bus_type", "Start_time", "End_time", "Total_duration",
             "Price", "Seats_Available", "Ratings", "Route_link", "Route_name", "State"
