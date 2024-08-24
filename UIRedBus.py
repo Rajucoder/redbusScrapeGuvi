@@ -127,6 +127,12 @@ if web=="Home":
                     and the data was efficiently inserted into relevant tables for storage and retrieval.''')
     slt.markdown("Streamlit: Developed an interactive web application using Streamlit, a user-friendly framework for data visualization and analysis.")
     slt.subheader(":Red[Skill-take:]")
+    slt.markdown('''
+                 Selenium
+                 Pandas 
+                 Mysql
+                 Streamlit
+                 ''')
 
 # States and Routes page setting
 if web == "📍States and Routes":
