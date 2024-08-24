@@ -76,3 +76,7 @@ Project Guidelines:
 Coding Standards: Follow PEP 8 guidelines for Python code.
 Version Control: Use Git for version control and maintain regular commits.
 Best Practices: Write modular, reusable code, and include comments and docstrings.
+
+Application:
+![Screenshot 2024-08-24 at 10 52 33 AM](https://github.com/user-attachments/assets/7b31f84a-4908-4963-b18d-ad48c8a1b852)
+
